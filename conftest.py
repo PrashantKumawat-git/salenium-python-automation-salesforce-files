@@ -55,9 +55,6 @@ def browser():
     print("Quit the browser")
 
 
-import os
-import pytest
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     pytest_html = item.config.pluginmanager.getplugin("html")
