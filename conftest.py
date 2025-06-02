@@ -7,56 +7,45 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 @pytest.fixture(scope="function", autouse=True)
 def browser():
-    edge_options = Options()
-    edge_options.add_experimental_option("prefs", {
-        "profile.default_content_setting_values.notifications": 1  # 1 = Allow, 2 = Block
-    })
-    driver = webdriver.Edge(options=edge_options)
-    print("Open Edge browser")
-    driver.maximize_window()
-    print("Maximize the window")
-    driver.implicitly_wait(10)
+    try:
+        edge_options = Options()
+        edge_options.add_experimental_option("prefs", {
+            "profile.default_content_setting_values.notifications": 1
+        })
+        driver = webdriver.Edge(options=edge_options)
+        driver.maximize_window()
+        driver.implicitly_wait(10)
 
-    # Login to Salesforce
-    driver.get("https://login.salesforce.com/")
-    print("Go to the login Url")
-    driver.find_element(By.ID, "username").send_keys("prashantkumawat@appsavio.com")
-    print("Entered Username")
-    driver.find_element(By.ID, "password").send_keys("Newdevorg9166@")
-    print("Entered Password")
-    driver.find_element(By.ID, "Login").click()
-    print("Logged into Salesforce")
+        # Login steps
+        driver.get("https://login.salesforce.com/")
+        driver.find_element(By.ID, "username").send_keys("prashantkumawat@appsavio.com")
+        driver.find_element(By.ID, "password").send_keys("Newdevorg9166@")
+        driver.find_element(By.ID, "Login").click()
 
-    # Wait for the home page to load (App Launcher should be available)
-    app_launcher = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//div[@class='slds-icon-waffle']"))
-    )
-    print("Home page loaded successfully")
-    app_launcher.click()
-    print("Clicked on App Launcher")
-    search_field = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        "//input[contains(@placeholder,'Search apps') or contains(@placeholder,'Search apps and items')]"))
-    )
-    search_field.clear()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[@class='slds-icon-waffle']"))
+        ).click()
 
-    # Search for Sales App
-    search_field.send_keys("Sales")
-    print("Searching for Sales...")
-    time.sleep(2)
-    driver.find_element(By.XPATH, "//a[@id='07p5j0000003V8hAAE']//b[contains(text(),'Sales')]").click()
-    print("Click on Sales App")
-    time.sleep(2)
-    yield driver
+        search_field = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH,
+                "//input[contains(@placeholder,'Search apps') or contains(@placeholder,'Search apps and items')]"))
+        )
+        search_field.clear()
+        search_field.send_keys("Sales")
+        time.sleep(2)
+        driver.find_element(By.XPATH, "//a[@id='07p5j0000003V8hAAE']//b[contains(text(),'Sales')]").click()
+        time.sleep(2)
+        yield driver
 
-    driver.quit()
-    print("Quit the browser")
+        driver.quit()
+
+    except Exception as e:
+        print(e)
 
 
-import os
-import pytest
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
@@ -65,38 +54,50 @@ def pytest_runtest_makereport(item):
     report = outcome.get_result()
     extra = getattr(report, 'extra', [])
 
-    if report.when == "call":
-        # Add a custom link (you can make this dynamic later)
-        extra.append(pytest_html.extras.url("https://login.salesforce.com/"))
+    driver = item.funcargs.get("browser", None)
 
-        xfail = hasattr(report, "wasxfail")
+    def is_driver_alive(driver):
+        try:
+            # A harmless command to check if session is alive
+            driver.title
+            return True
+        except Exception:
+            return False
 
-        if (report.skipped and xfail) or (report.failed and not xfail):
-            driver = item.funcargs.get("browser")
-            if driver:
-                # Safely get the HTML report path
-                htmlpath = getattr(item.config.option, "htmlpath", None)
-                if htmlpath:
-                    report_directory = os.path.dirname(htmlpath)
-                    screenshots_dir = os.path.join(report_directory, "screenshots")
-                    os.makedirs(screenshots_dir, exist_ok=True)
+    if report.when in ("setup", "call", "teardown") and driver and is_driver_alive(driver):
+        htmlpath = getattr(item.config.option, "htmlpath", None)
+        if htmlpath:
+            report_directory = os.path.dirname(htmlpath)
+        else:
+            report_directory = "reports"
+        screenshots_dir = os.path.join(report_directory, "screenshots")
+        os.makedirs(screenshots_dir, exist_ok=True)
 
-                    file_name = report.nodeid.replace("::", "_") + ".png"
-                    destination_file = os.path.join(screenshots_dir, file_name)
-                    driver.save_screenshot(destination_file)
+        file_name = f"{report.nodeid.replace('::', '_')}_{report.when}_{report.outcome}.png"
+        file_name = file_name.replace("/", "_").replace("\\", "_")
+        destination_file = os.path.join(screenshots_dir, file_name)
 
-                    if file_name:
-                        html = (
-                            f'<div><img src="screenshots/{file_name}" alt="screenshot" '
-                            'style="width:300px;height:200px;" '
-                            'onclick="window.open(this.src)" align="right"/></div>'
-                        )
-                        extra.append(pytest_html.extras.html(html))
-                else:
-                    print("Warning: --html option not set, screenshots not saved.")
+        # Screenshot
+        try:
+            driver.save_screenshot(destination_file)
+            html = (
+                f'<div><img src="screenshots/{file_name}" alt="screenshot" '
+                'style="width:300px;height:200px;" '
+                'onclick="window.open(this.src)" align="right"/></div>'
+            )
+            extra.append(pytest_html.extras.html(html))
+        except Exception as e:
+            print("Screenshot error:", e)
 
-        report.extra = extra
+        # Current URL
+        try:
+            current_url = driver.current_url
+            extra.append(pytest_html.extras.url(current_url))
+        except Exception as e:
+            print("URL capture error:", e)
+
+    report.extra = extra
 
 
 def pytest_html_report_title(report):
-    report.title = "Pytest HTML Report with Screenshots and Link"
+    report.title = "Pytest HTML Report with All Test Case Screenshots"
