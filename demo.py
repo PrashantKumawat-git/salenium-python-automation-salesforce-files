@@ -59,48 +59,56 @@ def browser():
     except Exception as e:
         print(e)
 
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
-    try:
-        pytest_html = item.config.pluginmanager.getplugin("html")
-        outcome = yield
-        report = outcome.get_result()
-        extra = getattr(report, 'extra', [])
+    pytest_html = item.config.pluginmanager.getplugin("html")
+    outcome = yield
+    report = outcome.get_result()
+    extra = getattr(report, 'extra', [])
 
-        if report.when == "call":
-            # Add a custom link (you can make this dynamic later)
-            extra.append(pytest_html.extras.url("https://login.salesforce.com/"))
+    driver = item.funcargs.get("browser", None)
 
-            xfail = hasattr(report, "wasxfail")
+    def is_driver_alive(driver):
+        try:
+            # A harmless command to check if session is alive
+            driver.title
+            return True
+        except Exception:
+            return False
 
-            if (report.skipped and xfail) or (report.failed and not xfail):
-                driver = item.funcargs.get("browser")
-                if driver:
-                    # Safely get the HTML report path
-                    htmlpath = getattr(item.config.option, "htmlpath", None)
-                    if htmlpath:
-                        report_directory = os.path.dirname(htmlpath)
-                        screenshots_dir = os.path.join(report_directory, "screenshots")
-                        os.makedirs(screenshots_dir, exist_ok=True)
+    if report.when in ("setup", "call", "teardown") and driver and is_driver_alive(driver):
+        htmlpath = getattr(item.config.option, "htmlpath", None)
+        if htmlpath:
+            report_directory = os.path.dirname(htmlpath)
+        else:
+            report_directory = "reports"
+        screenshots_dir = os.path.join(report_directory, "screenshots")
+        os.makedirs(screenshots_dir, exist_ok=True)
 
-                        file_name = report.nodeid.replace("::", "_") + ".png"
-                        destination_file = os.path.join(screenshots_dir, file_name)
-                        driver.save_screenshot(destination_file)
+        file_name = f"{report.nodeid.replace('::', '_')}_{report.when}_{report.outcome}.png"
+        file_name = file_name.replace("/", "_").replace("\\", "_")
+        destination_file = os.path.join(screenshots_dir, file_name)
 
-                        if file_name:
-                            html = (
-                                f'<div><img src="screenshots/{file_name}" alt="screenshot" '
-                                'style="width:300px;height:200px;" '
-                                'onclick="window.open(this.src)" align="right"/></div>'
-                            )
-                            extra.append(pytest_html.extras.html(html))
-                    else:
-                        print("Warning: --html option not set, screenshots not saved.")
+        # Screenshot
+        try:
+            driver.save_screenshot(destination_file)
+            html = (
+                f'<div><img src="screenshots/{file_name}" alt="screenshot" '
+                'style="width:300px;height:200px;" '
+                'onclick="window.open(this.src)" align="right"/></div>'
+            )
+            extra.append(pytest_html.extras.html(html))
+        except Exception as e:
+            print("Screenshot error:", e)
 
-            report.extra = extra
-    except Exception as e:
-        print(e)
+        # Current URL
+        try:
+            current_url = driver.current_url
+            extra.append(pytest_html.extras.url(current_url))
+        except Exception as e:
+            print("URL capture error:", e)
+
+    report.extra = extra
 
 
 def pytest_html_report_title(report):
