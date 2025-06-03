@@ -35,7 +35,7 @@ class TestVerifyContactOnCase:
             print("Contact selected")
 
             driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("New")
-            driver.find_element(By.XPATH, "//div[@role='listbox']// lightning-base-combobox-item[@data-value='001J400000YX7J4IAL']").click()
+            driver.find_element(By.XPATH, "//div[@role='listbox']// lightning-base-combobox-item[@data-value='001J400000WkQHnIAN']").click()
             print("Account Selected")
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")

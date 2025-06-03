@@ -26,7 +26,7 @@ class TestToVerifyAgeOnCase:
             print("Select Contact")
             driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("New")
             print("Search for Accounts in lookup")
-            driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='001J400000YX8l2IAD']").click()
+            driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='001J400000WkQHnIAN']").click()
             print("Select Account")
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys(rsdate)
             print("Fill Resolution Date as:"+rsdate)
