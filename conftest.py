@@ -19,7 +19,7 @@ def browser():
         print("Open Edge browser")
         driver.maximize_window()
         print("Maximize the window")
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(20)
 
         # Login to Salesforce
         driver.get("https://login.salesforce.com/")
@@ -32,13 +32,13 @@ def browser():
         print("Logged into Salesforce")
 
         # Wait for the home page to load (App Launcher should be available)
-        app_launcher = WebDriverWait(driver, 10).until(
+        app_launcher = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, "//div[@class='slds-icon-waffle']"))
         )
         print("Home page loaded successfully")
         app_launcher.click()
         print("Clicked on App Launcher")
-        search_field = WebDriverWait(driver, 10).until(
+        search_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH,
                                             "//input[contains(@placeholder,'Search apps') or contains(@placeholder,'Search apps and items')]"))
         )
