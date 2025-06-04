@@ -9,9 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 test_data = Utilities.read_data_from_excel("C:\\Selenium-Python\\PythonSeleniumProject\\SalesforceProjects\\testdata\\datainExcel.xlsx", "Sheet1")
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestCreateCaseViaExcel:
     @pytest.mark.parametrize("ContactName,ResolutionDate,Subject,Age", test_data)
-    def test_create_contact(self, browser, ContactName, ResolutionDate, Subject, Age):
+    def test_create_case_via_excel(self, browser, ContactName, ResolutionDate, Subject, Age):
 
         try:
             driver = browser
