@@ -24,7 +24,7 @@ class TestToVerifyAgeOnCase:
             print("Search for Contacts in lookup")
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='003J400000KMw5gIAD']").click()
             print("Select Contact")
-            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("New")
+            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("G")
             print("Search for Accounts in lookup")
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='001J400000WkQHnIAN']").click()
             print("Select Account")
