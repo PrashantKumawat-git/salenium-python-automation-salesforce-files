@@ -10,10 +10,10 @@ test_data = Utilities.read_data_from_csv("C:\\Selenium-Python\\PythonSeleniumPro
 
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestCreateCaseViaCsv:
 
     @pytest.mark.parametrize("ContactName,ResolutionDate,Subject,Age", test_data)
-    def test_create_contact(self, browser, ContactName, ResolutionDate, Subject, Age):
+    def test_create_case_via_csv(self, browser, ContactName, ResolutionDate, Subject, Age):
         try:
 
             driver = browser
