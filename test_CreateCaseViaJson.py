@@ -10,10 +10,10 @@ test_data = Utilities.read_data_from_json("C:\\Selenium-Python\\PythonSeleniumPr
 
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestVerifyCreateCaseViaJson:
 
     @pytest.mark.parametrize("ContactName,ResolutionDate,Subject,Age", test_data)
-    def test_create_contact(self, browser, ContactName, ResolutionDate, Subject, Age):
+    def test_create_case_via_json(self, browser, ContactName, ResolutionDate, Subject, Age):
         try:
 
             driver = browser
@@ -49,10 +49,11 @@ class TestVerifyContactOnCase:
             ))).click()
             print(f"Selected Contact: {ContactName}")
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys(ResolutionDate)
+            print(f"Selected Resolution Date as : {ResolutionDate}")
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys(Subject)
+            print(f"Selected Subject as : {Subject}")
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys(Age)
             print(f"Entered Age: {Age}")
-
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Clicked on Save")
 

@@ -59,13 +59,13 @@ def browser():
     except Exception as e:
         print(e)
 
+#create the HTML report
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     pytest_html = item.config.pluginmanager.getplugin("html")
     outcome = yield
     report = outcome.get_result()
     extra = getattr(report, 'extra', [])
-
     driver = item.funcargs.get("browser", None)
 
     def is_driver_alive(driver):
@@ -88,6 +88,15 @@ def pytest_runtest_makereport(item):
         file_name = f"{report.nodeid.replace('::', '_')}_{report.when}_{report.outcome}.png"
         file_name = file_name.replace("/", "_").replace("\\", "_")
         destination_file = os.path.join(screenshots_dir, file_name)
+
+        # Extract method name only from nodeid (which looks like 'test_module.py::TestClass::test_method')
+        #method_name = report.nodeid.split("::")[-1]
+        # Format: ddmm_HHMMSS
+        #timestamp = datetime.datetime.now().strftime('%d%m_%H%M%S')
+        # Final compact unique filename
+        #file_name = f"{method_name}_{timestamp}.png"
+        # Safe full path
+        #destination_file = os.path.join(screenshots_dir, file_name)
 
         # Screenshot
         try:
