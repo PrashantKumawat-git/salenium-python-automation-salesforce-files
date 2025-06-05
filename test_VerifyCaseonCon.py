@@ -39,10 +39,11 @@ class TestVerifyContactOnCase:
             print("Account Selected")
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
+            print("Selected Resolution Date as : 25/05/2025")
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
+            print("Selected Resolution Date as : New Case for Testing")
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("18")
-            print("Entered age")
-
+            print("Entered age as : 18")
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click On Save")
             print("Case is Created")
