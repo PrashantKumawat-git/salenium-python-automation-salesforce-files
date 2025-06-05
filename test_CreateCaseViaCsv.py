@@ -49,10 +49,11 @@ class TestCreateCaseViaCsv:
             ))).click()
             print(f"Selected Contact: {ContactName}")
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys(ResolutionDate)
+            print(f"Selected Resolution Date as : {ResolutionDate}")
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys(Subject)
+            print(f"Selected Subject as : {Subject}")
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys(Age)
             print(f"Entered Age: {Age}")
-
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Clicked on Save")
 
