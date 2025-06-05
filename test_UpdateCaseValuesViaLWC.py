@@ -39,9 +39,13 @@ class TestVerifyContactOnCase:
             print("Account Selected")
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
-            driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
-            driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("18")
-            print("Entered age")
+            print("Selected Resolution Date as : 25/05/2025")
+            
+            driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing LWC Component")
+            print("Selected Resolution Date as : New Case for Testing LWC Component")
+            
+            driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("20")
+            print("Entered age as : 20")
 
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click On Save")
@@ -55,16 +59,22 @@ class TestVerifyContactOnCase:
             # go to the Update Case Component
             driver.find_element(By.XPATH, "// button[@name='priority']").click()
             print("Click on the Priority picklist")
+            
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='Low']").click()
             print("Click on Low")
+            
             driver.find_element(By.XPATH, "// button[@name='product']").click()
             print("Click on the Product picklist")
+            
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='GC3040']").click()
             print("Click on the GC3040 product")
+            
             driver.find_element(By.XPATH, "//button[normalize-space()='Update Case']").click()
             print("Click on Update Case button")
+            
             priority_value= driver.find_element(By.XPATH, "// button[@name='priority']").text
             print("The Updated Priority value is :" + priority_value)
+            
             product_value = driver.find_element(By.XPATH, "// button[@name='product']").text
             print("The Updated Product value is :" + product_value)
 
