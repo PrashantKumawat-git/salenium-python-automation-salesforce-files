@@ -1,11 +1,11 @@
-
+import time
 import pytest
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("browser")
 class TestVerifyContactOnCase:
 
-    def test_update_case_component(self,browser):
+    def test_create_contact(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 
@@ -40,43 +40,36 @@ class TestVerifyContactOnCase:
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
             print("Selected Resolution Date as : 25/05/2025")
-
-            driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing LWC Component")
-            print("Selected Resolution Date as : New Case for Testing LWC Component")
-
-            driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("20")
-            print("Entered age as : 20")
-
+            driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
+            print("Entered Subject as : New Case for Testing")
+            driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("40")
+            print("Entered age as : 18")
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click On Save")
             print("Case is Created")
+            time.sleep(3)
 
-            case_number = driver.find_element(By.XPATH,
-                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
+            case_number = driver.find_element(By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
             print("The Case Number is: " + str(case_number))
-            print("Go to the Update Case Component")
 
-            # go to the Update Case Component
-            driver.find_element(By.XPATH, "// button[@name='priority']").click()
-            print("Click on the Priority picklist")
+            driver.find_element(By.XPATH, "//button[normalize-space()='Edit']").click()
+            print("Click on Edit button")
+            driver.find_element(By.XPATH, "//button[@aria-label='Case Origin']").click()
+            driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='Email']").click()
+            print("Update Case Origin as: Email")
 
-            driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='Low']").click()
-            print("Click on Low")
+            driver.find_element(By.XPATH, "//button[normalize-space()='Save']").click()
+            print("Click on Save button")
 
-            driver.find_element(By.XPATH, "// button[@name='product']").click()
-            print("Click on the Product picklist")
+            case_status = driver.find_element(By.XPATH, "//lightning-formatted-text[@slot='output'][normalize-space()='Working']").text
+            print("Updated Case Status is : "+ case_status)
 
-            driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='GC3040']").click()
-            print("Click on the GC3040 product")
+            case_priority = driver.find_element(By.XPATH, "//lightning-formatted-text[@slot='output'][normalize-space()='High']").text
+            print("Updated Case Status is : " + case_priority)
 
-            driver.find_element(By.XPATH, "//button[normalize-space()='Update Case']").click()
-            print("Click on Update Case button")
+            case_owner = driver.find_element(By.XPATH, "(//span[contains(text(),'Manager')])[7]").text
+            print("Updated Case Status is : " + case_owner)
 
-            priority_value= driver.find_element(By.XPATH, "// button[@name='priority']").text
-            print("The Updated Priority value is :" + priority_value)
-
-            product_value = driver.find_element(By.XPATH, "// button[@name='product']").text
-            print("The Updated Product value is :" + product_value)
 
         except Exception as e:
             print(e)

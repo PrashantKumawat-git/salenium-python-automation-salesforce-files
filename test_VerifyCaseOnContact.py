@@ -34,21 +34,22 @@ class TestVerifyContactOnCase:
             driver.find_element(By.XPATH, "//div[@role='listbox']// lightning-base-combobox-item[@data-value='003J400000KMw5gIAD']").click()
             print("Contact selected")
 
-            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("New")
+            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("G")
             driver.find_element(By.XPATH, "//div[@role='listbox']// lightning-base-combobox-item[@data-value='001J400000WkQHnIAN']").click()
             print("Account Selected")
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
+            print("Selected Resolution Date as : 25/05/2025")
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
+            print("Selected Resolution Date as : New Case for Testing")
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("18")
-            print("Entered age")
-
+            print("Entered age as : 18")
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click On Save")
             print("Case is Created")
 
-            case_number = driver.find_element(By.XPATH, "//records-highlights-details-item[@role='listitem' and @slot='secondaryFields'][contains(@style,'max-width: 136px;')]").text
-            case_number = case_number.split()[-1]
+            case_number = driver.find_element(By.XPATH,
+                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
             print("The Case Number is: " + str(case_number))
 
             driver.find_element(By.XPATH, "//a//span[contains(text(),'New Test Contact')]").click()

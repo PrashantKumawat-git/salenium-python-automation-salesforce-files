@@ -73,10 +73,9 @@ class TestCreateCaseViaCsv:
             print("Case is Created")
 
             # Extract Case Number
-            case_number_elem = driver.find_element(By.XPATH,
-                                                   "//records-highlights-details-item[@role='listitem'][@slot='secondaryFields']")
-            case_number = case_number_elem.text.strip().split()[-1]
-            print(f"The Case Number is: {case_number}")
+            case_number = driver.find_element(By.XPATH,
+                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
+            print("The Case Number is: " + str(case_number))
 
         except Exception as e:
             print(e)

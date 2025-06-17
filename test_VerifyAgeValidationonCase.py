@@ -24,7 +24,7 @@ class TestToVerifyAgeOnCase:
             print("Search for Contacts in lookup")
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='003J400000KMw5gIAD']").click()
             print("Select Contact")
-            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("New")
+            driver.find_element(By.XPATH, "//input[@placeholder='Search Accounts...']").send_keys("G")
             print("Search for Accounts in lookup")
             driver.find_element(By.XPATH, "//lightning-base-combobox-item[@data-value='001J400000WkQHnIAN']").click()
             print("Select Account")
@@ -36,16 +36,17 @@ class TestToVerifyAgeOnCase:
             print("Fill age as: "+ str(age))
 
         def test01_create_case_with_valid_age(self, browser):
+            print("executing test01_create_case_with_valid_age")
             self.createCase(browser, "25/05/2025", 18)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
             case_number = browser.find_element(By.XPATH,
-                "//records-highlights-details-item[@role='listitem' and @slot='secondaryFields'][contains(@style,'max-width: 136px;')]").text
-            case_number = case_number.split()[-1]
-            print("Case Number:", case_number)
+                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
+            print("The Case Number is: " + str(case_number))
             assert case_number.isdigit()
 
         def test02_create_case_with_invalid_age(self, browser):
+            print("executing test02_create_case_with_valid_age")
             self.createCase(browser, "25/05/2025", 16)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
@@ -64,6 +65,7 @@ class TestToVerifyAgeOnCase:
                 pytest.fail("Validation error not found")
 
         def test03_force_assertion_fail_case(self, browser):
+            print("executing test03_create_case_with_valid_age")
             self.createCase(browser, "25/05/2025", 10)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
