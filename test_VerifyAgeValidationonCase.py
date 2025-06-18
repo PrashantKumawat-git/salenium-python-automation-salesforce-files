@@ -6,10 +6,8 @@ from selenium.common.exceptions import NoSuchElementException
 class TestToVerifyAgeOnCase:
     try:
         def createCase(self, driver, rsdate, age):
-            driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/page/home")
-            print("Land on the Home page of the Sales App")
             driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/o/Case/list?filterName=__Recent")
-            print("Click on the Cases tab")
+            print("\nClick on the Cases tab")
             driver.find_element(By.XPATH, "//div[@title='New']").click()
             print("Click on the New button")
             driver.find_element(By.XPATH, "//label[@for='012J4000000kF5cIAE']// span[@class='slds-radio--faux']").click()

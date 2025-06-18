@@ -19,7 +19,7 @@ class TestCreateCaseViaExcel:
             driver.implicitly_wait(10)
 
             driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/o/Case/list?filterName=__Recent")
-            print("Navigated to the Cases tab")
+            print("\nNavigated to the Cases tab")
 
             driver.find_element(By.XPATH, "//div[@title='New']").click()
             print("Clicked on New button")

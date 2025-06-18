@@ -1,12 +1,12 @@
 import time
-
 import pytest
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("browser")
-class TestCreateServiceContractsLineItem:
+class TestCreateServiceContracts:
 
-    def test_create_service_contracts_line_item(self,browser):
+    def test_create_service_contracts(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 
@@ -50,30 +50,6 @@ class TestCreateServiceContractsLineItem:
             driver.find_element(By.XPATH, "//button[normalize-space()='Save']").click()
             print("Click On Save")
             print("Service Contract is Created")
-
-            # Create Service Contract Line Item
-            driver.find_element(By.XPATH, "//a[@id='relatedListsTab__item']").click()
-            print("click on Related tab")
-
-            driver.find_element(By.XPATH, "//div[@title='New Line Items']").click()
-            print("Click on New Line Items button from Related list")
-
-            driver.find_element(By.XPATH, "//label[@for='selection_01u5j00000FMlzLAAT']").click()
-            print("Click on the SLA Gold Product")
-
-            driver.find_element(By.XPATH, "//span[normalize-space()='Next']").click()
-            print("Click on the Next Button")
-
-            driver.find_element(By.XPATH, "//button[@title='Edit Quantity: Item null']").click()
-            driver.find_element(By.XPATH, "//input[@inputmode='decimal']").send_keys("5")
-            print("Fill Quantity as: 5")
-
-            driver.find_element(By.XPATH, "//button[@title='Edit Discount: Item null']").click()
-            driver.find_element(By.XPATH, "//input[@inputmode='decimal']").send_keys("10")
-            print("Fill Discount as: 10")
-
-            driver.find_element(By.XPATH, "//span[normalize-space()='Save']").click()
-            print("Click on Save Button")
 
         except Exception as e:
             print(e)

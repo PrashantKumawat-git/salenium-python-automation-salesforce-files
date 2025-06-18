@@ -11,7 +11,7 @@ class TestVerifyContactOnCase:
 
         try:
             driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/o/Case/list?filterName=__Recent")
-            print("Go to the Cases tab")
+            print("\nGo to the Cases tab")
 
             driver.find_element(By.XPATH, "//div[@title='New']").click()
             print("Click on New button")

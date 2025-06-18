@@ -9,7 +9,7 @@ class TestSumOfOppAmt:
         def test_sum_of_opportunities(self, browser):
             driver = browser
             driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/o/Account/list?filterName=AllAccounts")
-            print("Go to the Accounts page")
+            print("\nGo to the Accounts page")
             driver.find_element(By.XPATH, "//li[@data-target-selection-name='sfdc:StandardButton.Account.New']//a[@title='New']").click()
             print("Click on the New button")
 

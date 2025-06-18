@@ -10,7 +10,7 @@ class TestVerifyContactOnCase:
             driver = browser
             # Click on Account tab to create Account record
             driver.find_element(By.XPATH, "//a[contains(text(),'Accounts')]").click()
-            print("Click on Accounts tab")
+            print("\nClick on Accounts tab")
 
             # Create a New Account record
             driver.find_element(By.XPATH, "//a[@title='New']").click()
