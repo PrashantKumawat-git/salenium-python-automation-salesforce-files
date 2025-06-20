@@ -1,12 +1,15 @@
 import time
 import pytest
-from selenium.common import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 @pytest.mark.usefixtures("browser")
 class TestVerifyContactOnCase:
 
-    def test_create_contact(self,browser):
+    def test_create_contact(self, browser):
         driver = browser
         driver.implicitly_wait(20)
 
@@ -41,13 +44,17 @@ class TestVerifyContactOnCase:
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
             print("Selected Resolution Date as : 25/05/2025")
+
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
             print("Entered Subject as : New Case for Testing")
+
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("40")
-            print("Entered age as : 18")
+            print("Entered age as : 40")
+
             driver.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click On Save")
             print("Case is Created")
+
             time.sleep(3)
 
             case_number = driver.find_element(By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
@@ -60,23 +67,30 @@ class TestVerifyContactOnCase:
 
             mark_button = driver.find_element(By.XPATH, "//span[@class='uiOutputText']")
             driver.execute_script("arguments[0].click();", mark_button)
-
             print("Click on Mark as Current Status button")
 
-            case_status = driver.find_element(By.XPATH, "//lightning-formatted-text[@slot='output'][normalize-space()='Escalated']").text
-            print("Updated Case Status is :"+ case_status)
-            try:
+            wait = WebDriverWait(driver, 10)
+            case_status_element = wait.until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, "//lightning-formatted-text[@data-output-element-id='output-field'][normalize-space()='Escalated']")
+                )
+            )
+            case_status = case_status_element.text
+            print("Updated Case Status is: " + case_status)
 
-                if path_status == case_status:
-                    print("Assertion Passed")
-                else:
-                    print("Assertion Failed")
-            except NoSuchElementException:
-                pytest.fail("Status value not found")
+            if path_status == case_status:
+                print("Assertion Passed")
+            else:
+                print("Assertion Failed")
 
             assert path_status == case_status, f"Assertion Failed: Expected '{path_status}' but got '{case_status}'"
 
+        except TimeoutException:
+            pytest.fail("Element did not appear in time — possibly UI delay or wrong XPath.")
+        except NoSuchElementException as e:
+            pytest.fail(f"Element not found: {e}")
         except Exception as e:
-            print(e)
+            print(f"Unexpected error occurred:\n{e}")
+            pytest.fail("Test failed due to unexpected exception.")
         finally:
             print("Exit from the class")
