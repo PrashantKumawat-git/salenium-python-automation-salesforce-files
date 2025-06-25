@@ -2,6 +2,8 @@ import time
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class TestToVerifyAgeOnCase:
     try:
@@ -38,9 +40,13 @@ class TestToVerifyAgeOnCase:
             self.createCase(browser, "25/05/2025", 18)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
-            case_number = browser.find_element(By.XPATH,
-                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
-            print("The Case Number is: " + str(case_number))
+
+            wait = WebDriverWait(browser, 10)
+            case_number_element = wait.until(EC.visibility_of_element_located((By.XPATH,
+                                                                               "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text")))
+            case_number = case_number_element.text
+
+            print(f"The Case Number is: " + str(case_number))
             assert case_number.isdigit()
 
         def test02_create_case_with_invalid_age(self, browser):

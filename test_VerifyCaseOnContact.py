@@ -1,6 +1,8 @@
 
 import pytest
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("browser")
 class TestVerifyContactOnCase:
@@ -40,6 +42,7 @@ class TestVerifyContactOnCase:
 
             driver.find_element(By.XPATH, "//input[@name='Resolution_Date__c']").send_keys("25/05/2025")
             print("Selected Resolution Date as : 25/05/2025")
+
             driver.find_element(By.XPATH, "//input[@name='Subject']").send_keys("New Case for Testing")
             print("Selected Resolution Date as : New Case for Testing")
             driver.find_element(By.XPATH, "//input[@name='Age__c']").send_keys("18")
@@ -48,9 +51,11 @@ class TestVerifyContactOnCase:
             print("Click On Save")
             print("Case is Created")
 
-            case_number = driver.find_element(By.XPATH,
-                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
-            print("The Case Number is: " + str(case_number))
+            cwait = WebDriverWait(driver, 10)
+            case_number_element = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text")))
+            case_number = case_number_element.text
+
+            print(f"The Case Number is: " + str(case_number))
 
             driver.find_element(By.XPATH, "//a//span[contains(text(),'New Test Contact')]").click()
             print("Click on the Contact")

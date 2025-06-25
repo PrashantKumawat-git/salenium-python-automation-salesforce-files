@@ -73,9 +73,12 @@ class TestVerifyCreateCaseViaJson:
             print("Case is Created")
 
             # Extract Case Number
-            case_number = driver.find_element(By.XPATH,
-                                              "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
-            print("The Case Number is: " + str(case_number))
+            wait = WebDriverWait(driver, 10)
+            case_number_element = wait.until(EC.visibility_of_element_located((By.XPATH,
+                                                                               "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text")))
+            case_number = case_number_element.text
+
+            print(f"The Case Number is: " + str(case_number))
         except Exception as e:
             print(e)
         finally:

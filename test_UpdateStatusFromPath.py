@@ -55,10 +55,11 @@ class TestVerifyContactOnCase:
             print("Click On Save")
             print("Case is Created")
 
-            time.sleep(3)
+            wait = WebDriverWait(driver, 10)
+            case_number_element = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text")))
+            case_number = case_number_element.text
 
-            case_number = driver.find_element(By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text").text
-            print("The Case Number is: " + str(case_number))
+            print(f"The Case Number is: " + str(case_number))
 
             status = driver.find_element(By.XPATH, "//a[@title='Escalated' and @role='option']")
             path_status = status.text
@@ -69,7 +70,7 @@ class TestVerifyContactOnCase:
             driver.execute_script("arguments[0].click();", mark_button)
             print("Click on Mark as Current Status button")
 
-            wait = WebDriverWait(driver, 10)
+            #wait = WebDriverWait(driver, 10)
             case_status_element = wait.until(
                 EC.visibility_of_element_located(
                     (By.XPATH, "//lightning-formatted-text[@data-output-element-id='output-field'][normalize-space()='Escalated']")
