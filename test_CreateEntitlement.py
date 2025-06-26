@@ -2,9 +2,9 @@ import pytest
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("browser")
-class TestCreateWorkOrder:
+class TestCreateEntitlement:
 
-    def test_create_work_order(self,browser):
+    def test_create_entitlement(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 

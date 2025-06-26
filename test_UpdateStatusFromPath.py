@@ -7,9 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestUpdateStatusFromPath:
 
-    def test_create_contact(self, browser):
+    def test_update_status_from_path(self, browser):
         driver = browser
         driver.implicitly_wait(20)
 

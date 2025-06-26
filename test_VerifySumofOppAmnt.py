@@ -3,7 +3,7 @@ import pytest
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("browser")
-class TestSumOfOppAmt:
+class TestVerifySumOfOppAmt:
     try:
 
         def test_sum_of_opportunities(self, browser):

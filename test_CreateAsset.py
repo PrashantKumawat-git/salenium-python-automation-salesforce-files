@@ -4,9 +4,9 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 @pytest.mark.usefixtures("browser")
-class TestCreateWorkOrder:
+class TestCreateAsset:
 
-    def test_create_work_order(self,browser):
+    def test_create_asset(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 

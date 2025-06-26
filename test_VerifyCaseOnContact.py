@@ -5,9 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestVerifyCaseOnContact:
 
-    def test_create_contact(self,browser):
+    def test_verify_case_on_contact(self,browser):
         driver = browser
         driver.implicitly_wait(10)
 
@@ -51,7 +51,7 @@ class TestVerifyContactOnCase:
             print("Click On Save")
             print("Case is Created")
 
-            cwait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, 10)
             case_number_element = wait.until(EC.visibility_of_element_located((By.XPATH, "//span[text()='Case Number']/ancestor::div[contains(@class,'slds-form-element')]//lightning-formatted-text")))
             case_number = case_number_element.text
 

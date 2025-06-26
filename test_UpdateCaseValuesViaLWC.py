@@ -5,9 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestUpdateCasePriorityAndProductViaLWC:
 
-    def test_update_case_component(self,browser):
+    def test_update_case_priority_and_product_via_lwc(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 

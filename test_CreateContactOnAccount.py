@@ -4,9 +4,9 @@ from datetime import datetime
 import time
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestCreateContactOnAccount:
     try:
-        def test_create_account_and_verify_related_contact(self,browser):
+        def test_create_contact_on_account(self,browser):
             driver = browser
             # Click on Account tab to create Account record
             driver.find_element(By.XPATH, "//a[contains(text(),'Accounts')]").click()

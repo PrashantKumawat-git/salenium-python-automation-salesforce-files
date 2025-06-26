@@ -4,9 +4,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("browser")
-class TestCreateWorkOrder:
+class TestCreateWorkOrderLineItem:
 
-    def test_create_work_order(self,browser):
+    def test_create_work_order_line_item(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 

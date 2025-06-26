@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class TestToVerifyAgeOnCase:
     try:
-        def createCase(self, driver, rsdate, age):
+        def createcase(self, driver, rsdate, age):
             driver.get("https://appsavio59-dev-ed.develop.lightning.force.com/lightning/o/Case/list?filterName=__Recent")
             print("\nClick on the Cases tab")
             driver.find_element(By.XPATH, "//div[@title='New']").click()
@@ -37,7 +37,7 @@ class TestToVerifyAgeOnCase:
 
         def test01_create_case_with_valid_age(self, browser):
             print("executing test01_create_case_with_valid_age")
-            self.createCase(browser, "25/05/2025", 18)
+            self.createcase(browser, "25/05/2025", 18)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
 
@@ -51,7 +51,7 @@ class TestToVerifyAgeOnCase:
 
         def test02_create_case_with_invalid_age(self, browser):
             print("executing test02_create_case_with_valid_age")
-            self.createCase(browser, "25/05/2025", 16)
+            self.createcase(browser, "25/05/2025", 16)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
             time.sleep(4)
@@ -70,7 +70,7 @@ class TestToVerifyAgeOnCase:
 
         def test03_force_assertion_fail_case(self, browser):
             print("executing test03_create_case_with_valid_age")
-            self.createCase(browser, "25/05/2025", 10)
+            self.createcase(browser, "25/05/2025", 10)
             browser.find_element(By.XPATH, "//button[@name='SaveEdit']").click()
             print("Click on Save")
             time.sleep(4)

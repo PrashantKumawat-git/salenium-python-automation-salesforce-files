@@ -5,9 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 @pytest.mark.usefixtures("browser")
-class TestCreateWorkOrder:
+class TestCreateServiceAppointment:
 
-    def test_create_work_order(self,browser):
+    def test_create_service_appointment(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 
@@ -17,9 +17,6 @@ class TestCreateWorkOrder:
 
             driver.find_element(By.XPATH, "//div[@title='New']").click()
             print("Click on New button")
-
-            driver.find_element(By.XPATH, "//textarea[@part='textarea']").send_keys("New Service Appointment from Automation")
-            print("Entered Description as: New Service Appointment from Automation")
 
             driver.find_element(By.XPATH, "//input[@placeholder='Search Contacts...']").send_keys("New")
             print("Search for Contacts...")

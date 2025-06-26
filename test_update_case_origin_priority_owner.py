@@ -5,9 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("browser")
-class TestVerifyContactOnCase:
+class TestUpdateCaseOriginPriorityOwner:
 
-    def test_create_contact(self,browser):
+    def test_updatecaseoriginpriorityowner(self,browser):
         driver = browser
         driver.implicitly_wait(20)
 
@@ -70,10 +70,10 @@ class TestVerifyContactOnCase:
             print("Updated Case Status is : "+ case_status)
 
             case_priority = driver.find_element(By.XPATH, "//lightning-formatted-text[@slot='output'][normalize-space()='High']").text
-            print("Updated Case Status is : " + case_priority)
+            print("Updated Case Priority is : " + case_priority)
 
             case_owner = driver.find_element(By.XPATH, "(//span[contains(text(),'Manager')])[7]").text
-            print("Updated Case Status is : " + case_owner)
+            print("Updated Case Owner is : " + case_owner)
 
 
         except Exception as e:
