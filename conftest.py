@@ -24,9 +24,9 @@ def browser():
         # Login to Salesforce
         driver.get("https://login.salesforce.com/")
         print("Go to the login Url")
-        driver.find_element(By.ID, "username").send_keys("prashantkumawat@appsavio.com")
+        driver.find_element(By.ID, "username").send_keys("Your username")
         print("Entered Username")
-        driver.find_element(By.ID, "password").send_keys("Newdevorg9166@")
+        driver.find_element(By.ID, "password").send_keys("your password")
         print("Entered Password")
         driver.find_element(By.ID, "Login").click()
         print("Logged into Salesforce")
